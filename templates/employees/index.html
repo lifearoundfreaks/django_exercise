@@ -37,33 +37,16 @@
 {% endblock %}
 
 {% block content %}
-{% for employee in obj_list %}
-
-{% if employee.department %}
-
-<div class="card">
-    <div class="card-header">
-        {{employee.department.name_head}}
-    </div>
-    <div class="card-body">
-        <h5 class="card-title">{{  employee.fullname}}</h5>
-        <p class="cart-text">дата приема на работу: {{employee.works_Data}}</p>
-        <p class="cart-text">должность: {{employee.position }}</p>
-        <p class="cart-text">зарплата: {{employee.salary}}</p>
-        <a href="{{employee.get_url}}" class="btn btn-light">Read</a>
-    </div>
-</div>
-{% else %}
+{% for instance in obj_list %}
 <div class="card">
     <div class="card-body">
-        <h5 class="card-title">{{  employee.fullname}}</h5>
-        <p class="cart-text">дата приема на работу: {{employee.works_Data}}</p>
-        <p class="cart-text">должность: {{employee.position}}</p>
-        <p class="cart-text">зарплата: {{employee.salary}}</p>
-        <a href="{{employee.get_url}}" class="btn btn-light">Read</a>
+        <h5 class="card-title">{{ instance.last_name }} {{ instance.first_name }}</h5>
+        <p class="cart-text">дата приема на работу: {{instance.hiring_date}}</p>
+        <p class="cart-text">должность: {{instance.position }}</p>
+        <p class="cart-text">зарплата: {{instance.salary}}</p>
+        <a href=".." class="btn btn-light">Back</a>
     </div>
 </div>
-{% endif %}
 {% endfor %}
 
 {% endblock %}
