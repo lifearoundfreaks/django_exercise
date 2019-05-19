@@ -1,14 +1,13 @@
 {% extends 'employees/employees.html' %}
 {% block title %}
-    {{instance.fullname}} - {{ instance.salary }}
+    {{instance.last_name}} - {{ instance.first_name }}
 {% endblock %}
 
 {% block content %}
 
-    <div class="mb-5">{{instance.department.name_head}} </div>
     <div class="card">
         <div class="card-body">
-            <h5 class="card-title">{{  instance.fullname}}</h5>
+            <h5 class="card-title">{{ instance.last_name }} {{ instance.first_name }}</h5>
             <p class="cart-text">дата приема на работу: {{instance.works_Data}}</p>
             <p class="cart-text">должность: {{instance.position }}</p>
             <p class="cart-text">зарплата: {{instance.salary}}</p>
