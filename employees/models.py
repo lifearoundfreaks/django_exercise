@@ -3,8 +3,6 @@ import datetime
 
 
 class Position(models.Model):
-    # For now, let's just put department name after position name
-    # TODO: implement proper department model
     name = models.CharField(max_length=100)
 
     # Without any bonuses
@@ -27,6 +25,22 @@ class Position(models.Model):
         return self.id
 
 
+class Department(models.Model):
+    name = models.CharField(max_length=100)
+
+    class Meta:
+        db_table = "Department"
+
+    def __str__(self):
+        return '{}'.format(self.name)
+
+    def get_absolute_url(self):
+        """
+        Returns the url to access a particular instance of the model.
+        """
+        return self.id
+
+
 class Employee(models.Model):
     # Employee name fields
     first_name = models.CharField(max_length=20)
@@ -34,6 +48,11 @@ class Employee(models.Model):
 
     # Position should not be blank!
     position = models.ForeignKey(Position, on_delete=models.CASCADE)
+
+    # The way departments work should be the following: employee cannot have a
+    # boss from another department, but can still have a boss without one
+    department = models.ForeignKey(
+        Department, on_delete=models.SET_NULL, blank=True, null=True)
 
     # datetime.date() when employee was hired
     hiring_date = models.DateField(default=datetime.date.today)
@@ -49,6 +68,11 @@ class Employee(models.Model):
     @property
     def salary(self):
         return self.position.base_salary + self.additional_salary
+
+    # Property for employee filtering
+    @property
+    def dept(self):
+        return self.department
 
     # Position which is above this person's one
     @property

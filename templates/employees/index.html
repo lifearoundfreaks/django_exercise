@@ -43,6 +43,9 @@
         <h5 class="card-title">{{ instance.last_name }} {{ instance.first_name }}</h5>
         <p class="cart-text">дата приема на работу: {{instance.hiring_date}}</p>
         <p class="cart-text">должность: {{instance.position }}</p>
+        {% if instance.boss %}
+        <p class="cart-text">начальник: {{instance.boss.last_name}}</p>
+        {% endif %}
         <p class="cart-text">зарплата: {{instance.salary}}</p>
         <a href=".." class="btn btn-light">Back</a>
     </div>
