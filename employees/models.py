@@ -41,10 +41,19 @@ class Employee(models.Model):
     # This plus position.base_salary defines final salary
     additional_salary = models.IntegerField(default=0)
 
+    # Chosen person, should be the one holding a 'boss_position'
+    boss = models.ForeignKey(
+        'self', on_delete=models.SET_NULL, null=True, blank=True)
+
     # Actual salary
     @property
     def salary(self):
         return self.position.base_salary + self.additional_salary
+
+    # Position which is above this person's one
+    @property
+    def boss_position(self):
+        return self.position.boss_position
 
     class Meta:
         db_table = "Employee"
