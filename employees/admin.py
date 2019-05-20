@@ -25,6 +25,8 @@ class EmployeeForm(forms.ModelForm):
         elif hasattr(self.instance, 'position') and not self.instance.dept:
             self.fields['boss'].queryset = Employee.objects.filter(
                 Q(position=self.instance.boss_position))
+        else:
+            self.fields['boss'].widget = forms.HiddenInput()
 
 
 class EmployeeAdmin(admin.ModelAdmin):
