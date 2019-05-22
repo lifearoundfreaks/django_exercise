@@ -1,5 +1,5 @@
 {% extends 'employees/employees.html' %}
-
+{% load staticfiles %}
 {% block menu %}
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <a class="navbar-brand" href="#">Django</a>
@@ -21,16 +21,16 @@
         sort
     </button>
     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-        <a class="dropdown-item" href="sort=fullname">fullname</a>
-        <a class="dropdown-item" href="sort=position">position</a>
-        <a class="dropdown-item" href="sort=department">department</a>
-        <a class="dropdown-item" href="sort=salary">salary</a>
+        <a class="dropdown-item" href="javascript:"  id="fullname">fullname</a>
+        <a class="dropdown-item" href="sort=position" id="position">position</a>
+        <a class="dropdown-item" href="sort=department" id="department">department</a>
+        <a class="dropdown-item" href="sort=salary" id="salary">salary</a>
     </div>
 </div>
-    	<form class="form-inline my-2 my-lg-0">
-      		<input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="search">
+    	<form class="form-inline my-2 my-lg-0" id="search_form">
+      		<input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" id="search_input">
               <span id="searchclear" class="glyphicon glyphicon-remove-circle"></span>
-      		<button class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button>
+      		<button class="btn btn-outline-info my-2 my-sm-0" type="submit" name="search_fullname" id="search_">Search</button>
     	</form>
   	</div>
 </nav>
@@ -40,7 +40,7 @@
 {% for employee in obj_list %}
 
 {% if employee.department %}
-
+<div id="dd">ЛОЛ</div>
 <div class="card">
     <div class="card-header">
         {{employee.department.name_head}}
@@ -67,3 +67,16 @@
 {% endfor %}
 
 {% endblock %}
+
+{% block add_script %}
+    <!--<script src="{% static '../static/ajax.js' %}"></script>-->
+    <script type="javacript">
+       $(document).ready(function () {
+        $("#fullname").click(function() {
+            $.get("/employees_sort_fullname/", function(data) {
+                $("#dd").html(data.title);
+            });
+        });
+    });
+    </script>
+{% endblock%}
