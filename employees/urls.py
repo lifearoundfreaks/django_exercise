@@ -4,6 +4,5 @@ from .views import *
 
 
 urlpatterns = [
-    path(r'', employees_list),
-    path(r'<int:id>/', employees_details)
+    path(r'', employees),
 ]

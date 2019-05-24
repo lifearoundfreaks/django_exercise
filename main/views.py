@@ -2,5 +2,8 @@
 from django.shortcuts import render
 
 
-def homePage(request):
-    return render(request, "homepage.html")
+def home_page(request):
+    content = {
+        "title": "Home page"
+    }
+    return render(request, "index.html", content)

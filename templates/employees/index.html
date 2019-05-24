@@ -1,55 +1,24 @@
-{% extends 'employees/employees.html' %}
+{% extends 'index.html' %}
 
-{% block menu %}
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" href="#">Django</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar1" aria-controls="navbar1" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-  	</button>
-
-  	<div class="collapse navbar-collapse" id="navbar1">
-    	<ul class="navbar-nav mr-auto">
-      		<li class="nav-item active">
-        		<a class="nav-link" href="..">Home</a>
-      		</li>
-		    <li class="nav-item">
-		    	<a class="nav-link" href="">Employees</a>
-		    </li>
-    	</ul>
-        <div class="dropdown pr-sm-4">
-    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        sort
-    </button>
-    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-        <a class="dropdown-item" href="sort=fullname">fullname</a>
-        <a class="dropdown-item" href="sort=position">position</a>
-        <a class="dropdown-item" href="sort=department">department</a>
-        <a class="dropdown-item" href="sort=salary">salary</a>
-    </div>
-</div>
-    	<form class="form-inline my-2 my-lg-0">
-      		<input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="search">
-              <span id="searchclear" class="glyphicon glyphicon-remove-circle"></span>
-      		<button class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button>
-    	</form>
-  	</div>
-</nav>
-{% endblock %}
 
 {% block content %}
-{% for instance in obj_list %}
-<div class="card">
-    <div class="card-body">
-        <h5 class="card-title">{{ instance.last_name }} {{ instance.first_name }}</h5>
-        <p class="cart-text">дата приема на работу: {{instance.hiring_date}}</p>
-        <p class="cart-text">должность: {{instance.position }}</p>
-        {% if instance.boss %}
-        <p class="cart-text">начальник: {{instance.boss.last_name}}</p>
-        {% endif %}
-        <p class="cart-text">зарплата: {{instance.salary}}</p>
-        <a href=".." class="btn btn-light">Back</a>
+<div class="container mt-5">
+    {% for instance in obj_list %}
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">{{ instance.last_name }} {{ instance.first_name }}</h5>
+            <p class="cart-text">дата приема на работу: {{instance.hiring_date}}</p>
+            <p class="cart-text">должность: {{instance.position }}</p>
+            {% if instance.boss %}
+            <p class="cart-text">начальник: {{instance.boss.last_name}}</p>
+            {% endif %}
+            {% if instance.department %}
+            <p class="cart-text">отдел: {{instance.department.name}}</p>
+            {% endif %}
+            <p class="cart-text">зарплата: {{instance.salary}}</p>
+            <a href=".." class="btn btn-light">Back</a>
+        </div>
     </div>
-</div>
 {% endfor %}
-
+</div>
 {% endblock %}

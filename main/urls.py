@@ -19,6 +19,6 @@ from . import views
 
 urlpatterns = [
     path(r'admin/', admin.site.urls),
-    path('', views.homePage),
+    path('', views.home_page),
     path(r'employees/', include("employees.urls"), name='employees'),
 ]
