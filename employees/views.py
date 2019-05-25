@@ -1,47 +1,53 @@
+from django.http import HttpResponse
 from django.shortcuts import render
 from .models import Employees
 from django.db.models import Q
+from django.views.generic import View
+from django.http import Http404, JsonResponse
 
 
-def employees_sort_fullname(request):
+class SortFullName(View):
 
-    obj_list = Employees.objects.all().order_by("salary")
-
-    content = {
-        "obj_list": obj_list,
-        "title": "List"
-    }
-    return render(request, "employees/index.html", content)
-
-
-def employees_sort_position(request):
-    obj_list = Employees.objects.all().order_by("position")
-
-    content = {
-        "obj_list": obj_list,
-        "title": "List"
-    }
-    return render(request, "employees/index.html", content)
+    def get(self, request):
+        obj_list = Employees.objects.order_by("fullname")
+        content = {
+            "obj_list": obj_list,
+            "title": "List"
+        }
+        return render(request, "employees/index.html", content)
 
 
-def employees_sort_department(request):
-    obj_list = Employees.objects.all().order_by("department")
+class SortPosition(View):
 
-    content = {
-        "obj_list": obj_list,
-        "title": "List"
-    }
-    return render(request, "employees/index.html", content)
+    def get(self, request):
+        obj_list = Employees.objects.order_by("position")
+        content = {
+            "obj_list": obj_list,
+            "title": "List"
+        }
+        return render(request, "employees/index.html", content)
 
 
-def employees_sort_salary(request):
-    obj_list = Employees.objects.all().order_by("salary")
+class SortSalary(View):
 
-    content = {
-        "obj_list": obj_list,
-        "title": "List"
-    }
-    return render(request, "employees/index.html", content)
+    def get(self, request):
+        obj_list = Employees.objects.order_by("salary")
+        content = {
+            "obj_list": obj_list,
+            "title": "List"
+        }
+        return render(request, "employees/index.html", content)
+
+
+class SortDepartment(View):
+
+    def get(self, request):
+        obj_list = Employees.objects.order_by("department")
+        content = {
+            "obj_list": obj_list,
+            "title": "List"
+        }
+        return render(request, "employees/index.html", content)
 
 
 def employees_list(request):
@@ -63,7 +69,7 @@ def employees_list(request):
 def search_fullname(request):
 
     search = request.GET.get('search', '')
-    print("ff")
+
     if search:
         obj_list = Employees.objects.filter(Q(fullname__icontains=search))
     else:
