@@ -3,19 +3,19 @@
 
 {% block content %}
 <div class="container mt-5">
-    {% for instance in obj_list %}
+    {% for employee in employees %}
     <div class="card">
         <div class="card-body">
-            <h5 class="card-title">{{ instance.last_name }} {{ instance.first_name }}</h5>
-            <p class="cart-text">дата приема на работу: {{instance.hiring_date}}</p>
-            <p class="cart-text">должность: {{instance.position }}</p>
-            {% if instance.boss %}
-            <p class="cart-text">начальник: {{instance.boss.last_name}}</p>
+            <h5 class="card-title">{{ employee.last_name }} {{ employee.first_name }}</h5>
+            <p class="cart-text">дата приема на работу: {{employee.hiring_date}}</p>
+            <p class="cart-text">должность: {{employee.position }}</p>
+            {% if employee.boss %}
+            <p class="cart-text">начальник: {{employee.boss.last_name}}</p>
             {% endif %}
-            {% if instance.department %}
-            <p class="cart-text">отдел: {{instance.department.name}}</p>
+            {% if employee.department %}
+            <p class="cart-text">отдел: {{employee.department.name}}</p>
             {% endif %}
-            <p class="cart-text">зарплата: {{instance.salary}}</p>
+            <p class="cart-text">зарплата: {{employee.salary}}</p>
             <a href=".." class="btn btn-light">Back</a>
         </div>
     </div>
