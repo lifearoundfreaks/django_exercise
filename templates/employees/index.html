@@ -1,6 +1,7 @@
 {% extends 'employees/employees.html' %}
 {% load staticfiles %}
 {% block menu %}
+
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <a class="navbar-brand" href="#">Django</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar1" aria-controls="navbar1" aria-expanded="false" aria-label="Toggle navigation">
@@ -16,15 +17,16 @@
 		    	<a class="nav-link" href="">Employees</a>
 		    </li>
     	</ul>
+
         <div class="dropdown pr-sm-4">
-    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+   <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         sort
     </button>
     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-        <a class="dropdown-item" href="javascript:"  id="fullname">fullname</a>
-        <a class="dropdown-item" href="sort=position" id="position">position</a>
-        <a class="dropdown-item" href="sort=department" id="department">department</a>
-        <a class="dropdown-item" href="sort=salary" id="salary">salary</a>
+        <a class="dropdown-item" href="javascript:"  id="fullname_">fullname</a>
+        <a class="dropdown-item" href="javascript:" id="position">position</a>
+        <a class="dropdown-item" href="javascript:" id="department">department</a>
+        <a class="dropdown-item" href="javascript:" id="salary">salary</a>
     </div>
 </div>
     	<form class="form-inline my-2 my-lg-0" id="search_form">
@@ -35,12 +37,11 @@
   	</div>
 </nav>
 {% endblock %}
-
 {% block content %}
+<div class="container mt-5">
 {% for employee in obj_list %}
 
 {% if employee.department %}
-<div id="dd">ЛОЛ</div>
 <div class="card">
     <div class="card-header">
         {{employee.department.name_head}}
@@ -63,20 +64,66 @@
         <a href="{{employee.get_url}}" class="btn btn-light">Read</a>
     </div>
 </div>
+
 {% endif %}
 {% endfor %}
-
+</div>
 {% endblock %}
 
+
 {% block add_script %}
-    <!--<script src="{% static '../static/ajax.js' %}"></script>-->
-    <script type="javacript">
-       $(document).ready(function () {
-        $("#fullname").click(function() {
-            $.get("/employees_sort_fullname/", function(data) {
-                $("#dd").html(data.title);
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+      <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script type="text/javascript">
+     $(document).ready(function () {
+        $("#fullname_").click(function() {
+            $.ajax({
+                type: 'GET',
+                async: true,
+                url: '/employees/sort_fullname/',
+                data: "",
+                success: function(data) {
+                    $("#result").html(data);
+                },
+                error: function(xhr, status, e) {
+                   alert(status);
+                },
+                dataType: '',
+            });
+        });
+         $("#position").click(function() {
+            $.ajax({
+                type: 'GET',
+                async: true,
+                url: '/employees/sort_position/',
+                data: "",
+                success: function(data) {
+                    $("#result").html(data);
+                },
+                error: function(xhr, status, e) {
+                   alert(status);
+                },
+                dataType: '',
+            });
+        });
+          $("#salary").click(function() {
+            $.ajax({
+                type: 'GET',
+                async: true,
+                url: '/employees/sort_salary/',
+                data: "",
+                success: function(data) {
+                    $("#result").html(data);
+                },
+                error: function(xhr, status, e) {
+                   alert(status);
+                },
+                dataType: '',
             });
         });
     });
-    </script>
+</script>
 {% endblock%}
