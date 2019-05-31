@@ -12,6 +12,11 @@ class Position(models.Model):
     boss_position = models.ForeignKey(
         'self', on_delete=models.SET_NULL, null=True, blank=True)
 
+    # How much workers are expected to be on this position. Note, that this is
+    # the amount under each boss, meaning that the total amount would be
+    # 'expected_workers * appropriate_bosses'
+    expected_workers = models.IntegerField(default=1)
+
     class Meta:
         db_table = "Position"
 
@@ -90,3 +95,22 @@ class Employee(models.Model):
         Returns the url to access a particular instance of the model.
         """
         return self.id
+
+
+def get_appropriate_bosses(position, dept=None):
+    # TODO write a proper docstring
+
+    # If an employee works in a department they cannot work under
+    # someone from another department
+
+    # Also, they may only work under an appropriate boss
+
+    if dept:
+        return Employee.objects.filter(
+            models.Q(position=position.boss_position),
+            models.Q(department__isnull=True) |
+            models.Q(department=dept)
+            )
+    else:
+        return Employee.objects.filter(
+            models.Q(position=position.boss_position))

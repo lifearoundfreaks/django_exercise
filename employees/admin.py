@@ -1,7 +1,6 @@
 from django.contrib import admin
 from django import forms
-from django.db.models import Q
-from .models import Employee, Position, Department
+from .models import Employee, Position, Department, get_appropriate_bosses
 
 
 class EmployeeForm(forms.ModelForm):
@@ -12,19 +11,10 @@ class EmployeeForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(EmployeeForm, self).__init__(*args, **kwargs)
 
-        # If an employee works in a department they cannot work under
-        # someone from another department
-
-        # Also, they may only work under an appropriate boss
-
-        if hasattr(self.instance, 'position') and self.instance.dept:
-            self.fields['boss'].queryset = Employee.objects.filter(
-                Q(position=self.instance.boss_position),
-                Q(department__isnull=True) | Q(department=self.instance.dept)
-                )
-        elif hasattr(self.instance, 'position') and not self.instance.dept:
-            self.fields['boss'].queryset = Employee.objects.filter(
-                Q(position=self.instance.boss_position))
+        if hasattr(self.instance, 'position'):
+            self.fields['boss'].queryset = get_appropriate_bosses(
+                self.instance.position,
+                self.instance.dept,)
         else:
             self.fields['boss'].widget = forms.HiddenInput()
 

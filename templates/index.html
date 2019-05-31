@@ -58,10 +58,35 @@
 	</nav>
 
 	<!-- Page content -->
-	{% block content %}
-	{% endblock %}
+	<div class="container mt-5">
+		{% block content %}
+		<ul class="list-group">
+			<li id="d1" class="card list-group-item">
+				<div class="card-body pt-1">
+					<h5 style="float: left" class="card-title pt-1">Карточка</h5>
+					<button style="float: right" type="button" class="btn btn-dark" data-toggle="collapse"
+						data-target="#d2">Подчиненные</button>
+				</div>
+			</li>
+			<li id="d2" class="card collapse list-group-item ml-5">
+				<div class="card-body pt-1">
+					<h5 style="float: left" class="card-title pt-1">Карточка</h5>
+					<button style="float: right" type="button" class="btn btn-dark" data-toggle="collapse"
+						data-target="#d3">Подчиненные</button>
+				</div>
+			</li>
+			<li id="d3" class="card collapse list-group-item ml-5">
+				<div class="card-body pt-1">
+					<h5 style="float: left" class="card-title pt-1">Карточка</h5>
+				</div>
+			</li>
+		</ul>
+		{% endblock %}
+	</div>
 
 	<!-- Optional JavaScript -->
+	<script>
+	</script>
 	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
 	<script src="https://code.jquery.com/jquery-3.4.1.min.js"
 		integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>

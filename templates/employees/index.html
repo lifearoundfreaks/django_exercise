@@ -2,23 +2,21 @@
 
 
 {% block content %}
-<div class="container mt-5">
-    {% for employee in employees %}
-    <div class="card">
-        <div class="card-body">
-            <h5 class="card-title">{{ employee.last_name }} {{ employee.first_name }}</h5>
-            <p class="cart-text">дата приема на работу: {{employee.hiring_date}}</p>
-            <p class="cart-text">должность: {{employee.position }}</p>
-            {% if employee.boss %}
-            <p class="cart-text">начальник: {{employee.boss.last_name}}</p>
-            {% endif %}
-            {% if employee.department %}
-            <p class="cart-text">отдел: {{employee.department.name}}</p>
-            {% endif %}
-            <p class="cart-text">зарплата: {{employee.salary}}</p>
-            <a href=".." class="btn btn-light">Back</a>
-        </div>
+{% for employee in employees %}
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">{{ employee.last_name }} {{ employee.first_name }}</h5>
+        <p class="cart-text">дата приема на работу: {{employee.hiring_date}}</p>
+        <p class="cart-text">должность: {{employee.position }}</p>
+        {% if employee.boss %}
+        <p class="cart-text">начальник: {{employee.boss.last_name}}</p>
+        {% endif %}
+        {% if employee.department %}
+        <p class="cart-text">отдел: {{employee.department.name}}</p>
+        {% endif %}
+        <p class="cart-text">зарплата: {{employee.salary}}</p>
+        <a href=".." class="btn btn-light">Back</a>
     </div>
-{% endfor %}
 </div>
+{% endfor %}
 {% endblock %}

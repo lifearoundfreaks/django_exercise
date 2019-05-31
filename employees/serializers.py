@@ -11,6 +11,7 @@ class PositionSerializer(serializers.HyperlinkedModelSerializer):
             'name',
             'base_salary',
             'boss_position',
+            'expected_workers',
             )
 
 
