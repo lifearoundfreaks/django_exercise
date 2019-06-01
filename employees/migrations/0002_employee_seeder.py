@@ -58,13 +58,14 @@ def seeder(apps, schema_editor):
     for position in positions:
         # First, find approptiate bosses for this position
         bosses = get_appropriate_bosses(position)
+        # We'll keep track on departments to assign managers properly
+        current_dept = 1
         # For each boss, create expected for this position number of workers
         for boss in bosses:
-            current_dept = 1
             for n in range(position.expected_workers):
                 # If position is department manager, choose department
                 if position.name == "Department Manager":
-                    dept = Department.objects.all()[current_dept]
+                    dept = Department.objects.get(id=current_dept)
                     current_dept += 1
                 # Otherwise get department from boss
                 else:
