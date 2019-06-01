@@ -84,6 +84,11 @@ class Employee(models.Model):
     def boss_position(self):
         return self.position.boss_position
 
+    # Does this employee have subordinates?
+    @property
+    def has_subordinates(self):
+        return len(Employee.objects.filter(boss__id=self.id)) > 0
+
     class Meta:
         db_table = "Employee"
 

@@ -1,18 +1,34 @@
 from django.shortcuts import render
 from .models import Employee, Department, Position
 from rest_framework import viewsets
-from .serializers import EmployeeSerializer, DepartmentSerializer, PositionSerializer
+from .serializers import EmployeeSerializer, DepartmentSerializer
+from .serializers import PositionSerializer
 
 
 def employees(request):
+    if request.method == 'GET':
+        # If our request has id, we'll return a list of subordinates
+        try:
+            index = request.GET['id']
+            employees = Employee.objects.filter(
+                boss__id=index)
 
-    obj_list = Employee.objects.all().order_by("last_name")
+            content = {
+                "employees": employees,
+            }
 
-    content = {
-        "employees": obj_list,
-        "title": "All employees"
-    }
-    return render(request, "employees/index.html", content)
+            return render(request, "employees/card_list.html", content)
+
+        # Otherwise just display employee tree page
+        except KeyError:
+            employees = Employee.objects.filter(
+                position__boss_position__isnull=True)
+
+            content = {
+                "employees": employees,
+                "title": "Employee tree view"
+            }
+            return render(request, "employees/index.html", content)
 
 
 class EmployeeRestView(viewsets.ModelViewSet):

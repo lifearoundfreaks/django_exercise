@@ -2,21 +2,39 @@
 
 
 {% block content %}
-{% for employee in employees %}
-<div class="card">
-    <div class="card-body">
-        <h5 class="card-title">{{ employee.last_name }} {{ employee.first_name }}</h5>
-        <p class="cart-text">дата приема на работу: {{employee.hiring_date}}</p>
-        <p class="cart-text">должность: {{employee.position }}</p>
-        {% if employee.boss %}
-        <p class="cart-text">начальник: {{employee.boss.last_name}}</p>
-        {% endif %}
-        {% if employee.department %}
-        <p class="cart-text">отдел: {{employee.department.name}}</p>
-        {% endif %}
-        <p class="cart-text">зарплата: {{employee.salary}}</p>
-        <a href=".." class="btn btn-light">Back</a>
-    </div>
-</div>
-{% endfor %}
+<ul>
+    {% include "employees/card_list.html" %}
+</ul>
+{% endblock %}
+
+
+{% block javascript %}
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(document).on('click', '.subordinates', function () {
+
+            if ($(this).text() == "Show subordinates"){
+                $(this).text("Hide subordinates")
+            }
+            else {
+                $(this).text("Show subordinates")
+            }
+
+            var id = $(this).attr('id');
+            $.ajax({
+                type: 'GET',
+                async: true,
+                url: '/employees/',
+                data: { id: id },
+                success: function (data) {
+                    $("#sub" + id).html(data);
+                },
+                error: function (xhr, status, e) {
+                    alert(status);
+                },
+                dataType: '',
+            });
+        });
+    });
+</script>
 {% endblock %}

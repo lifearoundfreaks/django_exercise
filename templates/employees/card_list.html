@@ -1,0 +1,30 @@
+{% block card_list %}
+
+{% for employee in employees %}
+<li class="card">
+    <div class="card-body">
+
+        <h5 class="card-title">
+            {{ employee.last_name }} {{ employee.first_name }} ({{ employee.position }}{% if employee.department %} of
+            {{ employee.department }}{% endif %})
+        </h5>
+
+        <p class="card-text">
+            Was hired: {{ employee.hiring_date }}; Salary: {{ employee.salary }}
+
+        </p>
+    </div>
+
+    {% if employee.has_subordinates %}
+    <button id="{{ employee.id }}" type="button" class="btn btn-dark subordinates" data-toggle="collapse"
+        data-target="#sub{{ employee.id }}">Show subordinates</button>
+    {% endif %}
+</li>
+
+{% if employee.has_subordinates %}
+<ul id="sub{{ employee.id }}" class="collapse">
+</ul>
+{% endif %}
+{% endfor %}
+
+{% endblock %}
