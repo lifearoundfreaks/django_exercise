@@ -11,7 +11,7 @@
 		integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
 	<!-- Page title -->
-	<title>{{ title }}</title>
+	<title id="{{ title_id }}">{{ title }}</title>
 </head>
 
 <body>
@@ -27,10 +27,10 @@
 		<div class="collapse navbar-collapse" id="navbar1">
 			<ul class="navbar-nav mr-auto">
 				<li class="nav-item">
-					<a class="nav-link" href="/">Treeview</a>
+					<a id="tree" class="nav-link" href="/">Treeview</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" href="/search/">Advanced search</a>
+					<a id="adv_search" class="nav-link" href="/search/">Advanced search</a>
 				</li>
 				<li class="nav-item">
 					<a class="nav-link" href="/api">API</a>
@@ -64,18 +64,27 @@
 
 	<!-- Optional JavaScript -->
 	<script type="text/javascript">
-		// Setting active nav item
 		$(document).ready(function () {
-			$(".nav-link").each(function (index) {
-				if($(this).prop("href") == $(location).prop('href')){
-					$(this).parent().addClass("active")
+			
+			// Setting active nav item
+			title_id = $("head title").attr('id')
+			$("li.nav-item > a").each(function (index) {
+				nav_id = $(this).attr("id")
+				if (title_id == nav_id) {
+					$(this).addClass("active")
 				}
-			})
+			});
 		});
 	</script>
+
 	{% block javascript %}
 	{% endblock %}
 
 </body>
+<!-- Footer -->
+<footer class="page-footer font-small blue">
+	<!-- Copyright -->
+	<div class="footer-copyright text-center py-3 mb-5">© 2019 Copyright: somebody</div>
+</footer>
 
 </html>

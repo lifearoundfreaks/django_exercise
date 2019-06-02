@@ -9,18 +9,8 @@
 
         <p class="card-text">
             Was hired: {{ employee.hiring_date }}; Salary: {{ employee.salary }}
-
         </p>
     </div>
-
-    {% if employee.has_subordinates %}
-    <button id="{{ employee.id }}" type="button" class="btn btn-dark subordinates" data-toggle="collapse"
-        data-target="#sub{{ employee.id }}">Show subordinates</button>
-    {% endif %}
 </li>
-
-{% if employee.has_subordinates %}
-<ul id="sub{{ employee.id }}" class="collapse">
-</ul>
-{% endif %}
 {% endfor %}
+{% include "pagination.html" %}

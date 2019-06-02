@@ -2,8 +2,43 @@
 
 
 {% block content %}
+<ul id="search_results">
+    {% include "employees/search_results.html" %}
+</ul>
 {% endblock %}
 
 
 {% block javascript %}
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(document).on('click', '.page-item > button', function () {
+            page = $(this).text()
+            
+            if (page == "Previous" && !$(this).hasClass("disabled")){
+                page = parseInt($(".page-item > button.active").text()) - 1
+            }
+            if (page == "Next" && !$(this).hasClass("disabled")){
+                page = parseInt($(".page-item > button.active").text()) + 1
+            }
+            if (!$(this).hasClass("disabled")) {
+                $.ajax({
+                    type: 'GET',
+                    async: true,
+                    url: '/search/',
+                    data: {
+                        ajax: true,
+                        page: page
+                    },
+                    success: function (data) {
+                        $("#search_results").html(data)
+                    },
+                    error: function (xhr, status, e) {
+                        alert(status);
+                    },
+                    dataType: '',
+                });
+            }
+        });
+    });
+</script>
 {% endblock %}
