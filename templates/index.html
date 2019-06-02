@@ -26,27 +26,16 @@
 		<!-- Navbar options -->
 		<div class="collapse navbar-collapse" id="navbar1">
 			<ul class="navbar-nav mr-auto">
-				<li class="nav-item active">
-					<a class="nav-link" href="/">Home</a>
+				<li class="nav-item">
+					<a class="nav-link" href="/">Treeview</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" href="/employees/">Employees</a>
+					<a class="nav-link" href="/search/">Advanced search</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="/api">API</a>
 				</li>
 			</ul>
-		</div>
-
-		<!-- Search filter options -->
-		<div class="dropdown pr-sm-4">
-			<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton"
-				data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-				sort
-			</button>
-			<div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-				<a class="dropdown-item">fullname</a>
-				<a class="dropdown-item">position</a>
-				<a class="dropdown-item">department</a>
-				<a class="dropdown-item">salary</a>
-			</div>
 		</div>
 
 		<!-- Search form -->
@@ -74,6 +63,16 @@
 		crossorigin="anonymous"></script>
 
 	<!-- Optional JavaScript -->
+	<script type="text/javascript">
+		// Setting active nav item
+		$(document).ready(function () {
+			$(".nav-link").each(function (index) {
+				if($(this).prop("href") == $(location).prop('href')){
+					$(this).parent().addClass("active")
+				}
+			})
+		});
+	</script>
 	{% block javascript %}
 	{% endblock %}
 
