@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from .models import Employee
 from .utilities import PaginationSetter
+from django.db.models import Q
+from django.core.exceptions import FieldDoesNotExist
 
 
 def employees(request):
@@ -32,6 +34,7 @@ def employees(request):
 
 def search(request):
     if request.method == 'GET':
+        print(request)
         try:
             # Current page parameter. 1 by default
             page = max(int(request.GET.get('page')), 1)
@@ -46,19 +49,39 @@ def search(request):
         except (ValueError, TypeError):
             page_size = 10
 
+        try:
+            # Query by which to search a database. Use whitespaces for
+            # multiple words
+            query = request.GET.get('query')
+            if not query:
+                raise ValueError
+        except ValueError:
+            query = ""
+
+        # First, let's get all objects
         employees = Employee.objects.all()
+
+        # Now let's filter by each word in query if any
+        for word in query.split():
+            employees = employees.filter(
+                    Q(last_name__icontains=word) |
+                    Q(first_name__icontains=word) |
+                    Q(position__name__icontains=word) |
+                    Q(department__name__icontains=word))
+
+        # How much are we left with?
+        total_number = employees.count()
 
         # Sort by which Employee field?
         sort_by = request.GET.get('sort_by')
-        if sort_by and hasattr(Employee, sort_by):
+        try:
+            Employee._meta.get_field(sort_by)
             employees = employees.order_by(sort_by)[
                 (page - 1) * page_size:page * page_size]
-        else:
+        except (ValueError, TypeError, FieldDoesNotExist):
             # We'll sort by last name by default
             employees = employees.order_by('last_name')[
                 (page - 1) * page_size:page * page_size]
-
-        total_number = Employee.objects.all().count()
 
         # Different logic if this view was called by ajax
         if request.GET.get('ajax'):
