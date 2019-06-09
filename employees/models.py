@@ -6,7 +6,7 @@ class Position(models.Model):
     name = models.CharField(max_length=100)
 
     # Without any bonuses
-    base_salary = models.IntegerField(default=0)
+    salary = models.IntegerField(default=0)
 
     # If left blank, it is assumed that this position has no positions above it
     boss_position = models.ForeignKey(
@@ -62,17 +62,12 @@ class Employee(models.Model):
     # datetime.date() when employee was hired
     hiring_date = models.DateField(default=datetime.date.today)
 
-    # This plus position.base_salary defines final salary
-    additional_salary = models.IntegerField(default=0)
+    # Should be based on position.salary
+    salary = models.IntegerField(default=0)
 
     # Chosen person, should be the one holding a 'boss_position'
     boss = models.ForeignKey(
         'self', on_delete=models.SET_NULL, null=True, blank=True)
-
-    # Actual salary
-    @property
-    def salary(self):
-        return self.position.base_salary + self.additional_salary
 
     # Property for employee filtering
     @property

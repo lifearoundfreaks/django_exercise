@@ -84,7 +84,7 @@ def seeder(apps, schema_editor):
 def create_position(name, salary, workers, boss=None):
     position = Position(
         name=name,
-        base_salary=salary,
+        salary=salary,
         expected_workers=workers,
     )
     if boss:
@@ -97,7 +97,7 @@ def create_empoyee(first_name, last_name, position, boss=None, dept=None):
         first_name=first_name,
         last_name=last_name,
         position=position,
-        additional_salary=randint(-10, 50) * 100,
+        salary=position.salary + randint(-10, 50) * 100,
         hiring_date=(datetime.now() - timedelta(days=randint(1, 600))).date(),
     )
     if boss:
