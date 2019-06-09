@@ -1,35 +1,39 @@
 class PaginationSetter():
-    def __init__(self, page_amount, page):
-        # This dictionary stores different layouts for paginator
-        layouts = {
-            # If there's 5 or less pages, this one should be used
-            5: {i: "" if i != page else "active" for i in range(
-                1, page_amount + 1)},
-            # If there's more than than 5 pages, this should be used
-            6: {
-                1: "",
-                "...": "disabled",
-                page: "active",
-                "... ": "disabled",
-                page_amount: "",
-            },
-            # If there's more than 5 AND page is 1, 2, n-1 or n (at edge)
-            7: {
-                1: "" if page != 1 else "active",
-                2: "" if page != 2 else "active",
-                "...": "disabled",
-                page_amount - 1: "" if page != page_amount - 1 else "active",
-                page_amount: "" if page != page_amount else "active",
-            },
-        }
-        # Is page at the edge of list? (1, 2, n-1 or n)
-        if page_amount > 5:
-            page_at_edge = page < 3 or page > page_amount - 2
+    def __init__(self, page_amount, page, max_pages=11):
+        # If there's more than than max_pages pages, this should be used
+        if page_amount > max_pages:
+            layout = {}
+            limit = (max_pages // 2) - 2
+            # If there's more than max_pages AND page is at left edge
+            if page <= limit + 3:
+                layout.update(dict.fromkeys(
+                    range(1, max_pages - 1), ""))
+                layout["..."] = "disabled"
+                layout[page_amount] = ""
+            # If there's more than max_pages AND page is at right edge
+            elif page > page_amount - limit - 2:
+                layout[1] = ""
+                layout["..."] = "disabled"
+                layout.update(dict.fromkeys(
+                    range(page_amount - max_pages + 3, page_amount + 1), ""))
+            # If there's more than max_pages AND page is NOT at edge
+            else:
+                layout[1] = ""
+                layout["..."] = "disabled"
+                layout.update(dict.fromkeys(
+                    range(page - limit, page + limit + max_pages % 2), ""))
+                layout["... "] = "disabled"
+                layout[page_amount] = ""
+
+            layout[page] = "active"
+
+        # If there's max_pages or less pages, this one should be used
         else:
-            page_at_edge = False
+            layout = {i: "" if i != page else "active" for i in range(
+                1, page_amount + 1)}
 
         # Let's get the proper layout from layouts dictionary
-        self.pages = layouts[min(max(page_amount, 5), 6) + page_at_edge]
+        self.pages = layout
 
         # Finally, check if we need 'previous' and 'next' buttons
         self.previous = "" if page != 1 else "disabled"
