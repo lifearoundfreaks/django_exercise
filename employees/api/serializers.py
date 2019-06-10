@@ -9,7 +9,7 @@ class PositionSerializer(serializers.HyperlinkedModelSerializer):
             'id',
             'url',
             'name',
-            'base_salary',
+            'salary',
             'boss_position',
             'expected_workers',
             )
