@@ -3,8 +3,9 @@
     <div class="card-body">
 
         <h5 class="card-title">
-            {{ employee.last_name }} {{ employee.first_name }} ({{ employee.position }}{% if employee.department %} of
-            {{ employee.department }}{% endif %})
+            <a href="/employees/{{ employee.id }}/">
+                {{ employee.last_name }} {{ employee.first_name }} ({{ employee.position }}{% if employee.department %} of {{ employee.department }}{% endif %})
+            </a>
         </h5>
 
         <p class="card-text">

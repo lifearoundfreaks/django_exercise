@@ -1,0 +1,33 @@
+{% extends 'index.html' %}
+{% block content %}
+<li class="card">
+    <div class="card-body">
+
+        <h5 class="card-title pb-3">
+            {{ employee.last_name }} {{ employee.first_name }}
+        </h5>
+
+        <p class="card-text">
+            <b>Position:</b> {{ employee.position }}
+        </p>
+        <p class="card-text">
+            <b>Department:</b>
+            {% if not employee.department %} Not in a department
+            {% else %} {{ employee.department }}
+            {% endif %}
+        </p>
+        <p class="card-text">
+            <b>Boss:</b>
+            {% if not employee.boss %} Has no boss
+            {% else %} <a href="/employees/{{ employee.boss.id }}/">{{ employee.boss }}</a>
+            {% endif %}
+        </p>
+        <p class="card-text">
+            <b>Salary:</b> {{ employee.salary }}
+        </p>
+        <p class="card-text">
+            <b>Was hired:</b> {{ employee.hiring_date }}
+        </p>
+    </div>
+</li>
+{% endblock %}

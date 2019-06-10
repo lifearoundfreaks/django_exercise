@@ -32,6 +32,14 @@ def employees(request):
             return render(request, "employees/index.html", context)
 
 
+def employee(request, employee_id):
+    if request.method == 'GET':
+        context = {
+                "employee": Employee.objects.get(id=employee_id),
+            }
+        return render(request, "employees/personal.html", context)
+
+
 def search(request):
     if request.method == 'GET':
         print(request)
