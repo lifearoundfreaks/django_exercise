@@ -51,6 +51,9 @@ class Employee(models.Model):
     first_name = models.CharField(max_length=20)
     last_name = models.CharField(max_length=20)
 
+    # Photo
+    photo = models.ImageField(default="nophoto.png", blank=True)
+
     # Position should not be blank!
     position = models.ForeignKey(Position, on_delete=models.CASCADE)
 

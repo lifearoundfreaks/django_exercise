@@ -8,6 +8,7 @@ from employees.models import (Employee,
 from names import get_first_name, get_last_name
 from random import randint
 from datetime import datetime, timedelta
+from math import log10
 
 
 def seeder(apps, schema_editor):
@@ -38,7 +39,7 @@ def seeder(apps, schema_editor):
 
     # Now, let's create departments
     for n in range(1, DEPARTMENTS + 1):
-        dept = Department(name="Department {}".format(n))
+        dept = Department(name="Department {}".format(pretty_number(n, 3)))
         dept.save()
 
     # Hiring a director
@@ -105,6 +106,11 @@ def create_empoyee(first_name, last_name, position, boss=None, dept=None):
     if dept:
         employee.department = dept
     employee.save()
+
+
+def pretty_number(number, trim):
+    number %= 10 ** trim
+    return "{}{}".format("0" * (trim - 1 - int(log10(number))), number)
 
 
 class Migration(migrations.Migration):

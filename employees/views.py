@@ -37,6 +37,8 @@ def employee(request, employee_id):
         context = {
                 "employee": Employee.objects.get(id=employee_id),
             }
+
+        print(Employee.objects.get(id=employee_id).photo)
         return render(request, "employees/personal.html", context)
 
 
