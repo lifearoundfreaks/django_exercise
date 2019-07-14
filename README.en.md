@@ -16,6 +16,11 @@ Use a standard Django command for starting a server:
 python manage.py runserver
 ```
 
+Superuser account (if you are using unchanged database):
+```bash
+login: super
+password: super
+```
 ## Database seeding
 
 This project shows usage of migrations as a database seeding method. The migration will put more than 50 thousand objects inside a database and this process might take from 15 to 20 minutes. It wasn't my goal to make this process efficient but to use it for a demonstration of working with large amounts of structured data instead.
