@@ -18,7 +18,7 @@ pip install -r requirements.txt
 python manage.py runserver
 ```
 
-Аккаунт суперпользователя (если используется исходная дб):
+Аккаунт суперпользователя (если используется не измененная датабаза):
 ```bash
 login: super
 password: super
