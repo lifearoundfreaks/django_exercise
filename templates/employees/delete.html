@@ -1,0 +1,10 @@
+{% extends 'index.html' %}
+{% block content %}
+<form action="." method="POST">{% csrf_token %}
+    <h3>Do you really want to delete {{employee}}?</h3>
+    <p>
+        <input class="ml-1 btn btn-outline-danger" type="submit" value="Yes"/>
+        <a class="ml-1 btn btn-outline-dark" href="../">Cancel</a>
+    </p>
+</form>
+{% endblock %}

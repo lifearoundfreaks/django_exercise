@@ -1,5 +1,8 @@
 from django.db import models
 import datetime
+from random import choice
+from django.db.models.signals import pre_delete
+from django.dispatch import receiver
 
 
 class Position(models.Model):
@@ -21,7 +24,7 @@ class Position(models.Model):
         db_table = "Position"
 
     def __str__(self):
-        return '{}'.format(self.name)
+        return f'{self.name}'
 
     def get_absolute_url(self):
         """
@@ -37,7 +40,7 @@ class Department(models.Model):
         db_table = "Department"
 
     def __str__(self):
-        return '{}'.format(self.name)
+        return f'{self.name}'
 
     def get_absolute_url(self):
         """
@@ -70,7 +73,9 @@ class Employee(models.Model):
 
     # Chosen person, should be the one holding a 'boss_position'
     boss = models.ForeignKey(
-        'self', on_delete=models.SET_NULL, null=True, blank=True)
+        'self',
+        on_delete=models.SET_NULL,
+        null=True, blank=True)
 
     # Property for employee filtering
     @property
@@ -91,7 +96,7 @@ class Employee(models.Model):
         db_table = "Employee"
 
     def __str__(self):
-        return '{} {}'.format(self.last_name, self.first_name)
+        return f'{self.last_name} {self.first_name}'
 
     def get_url(self):
         """
@@ -100,20 +105,63 @@ class Employee(models.Model):
         return self.id
 
 
-def get_appropriate_bosses(position, dept=None):
-    # TODO write a proper docstring
+def get_appropriate_bosses(position, dept=None, last_boss=None):
+    """ Get a queryset of all employees who are of an appropriate position to
+    be a boss to an employee with passed position
+
+    :param position: position to which we want to find bosses
+    :type position: 'models.Position'
+    :param dept: optional department, boss can't be from another department
+    :type dept: 'models.Department', optional
+    :param last_boss: previous boss if any; we'll simply exclude him from query
+    :type last_boss: 'models.Employee', optional
+    :return: queryset with appropriate bosses
+    :rtype: 'django.db.models.query.QuerySet'
+    """
 
     # If an employee works in a department they cannot work under
     # someone from another department
 
     # Also, they may only work under an appropriate boss
+    result = None
 
+    # If an employee has a department exclude bosses with other departments
     if dept:
-        return Employee.objects.filter(
+        result = Employee.objects.filter(
             models.Q(position=position.boss_position),
             models.Q(department__isnull=True) |
             models.Q(department=dept)
             )
+    # Else just search normally
     else:
-        return Employee.objects.filter(
+        result = Employee.objects.filter(
             models.Q(position=position.boss_position))
+
+    # Excluding previous boss from queryset
+    if last_boss:
+        result = result.exclude(id=last_boss.id)
+
+    return result
+
+
+@receiver(pre_delete, sender=Employee)
+def handlePreDelete(sender, **kwargs):
+    """ Handling employee deletion event """
+    # Getting employee instance
+    boss = kwargs['instance']
+    # Finding all subordinates
+    subordinates = boss.employee_set.all()
+
+    # For each subordinate
+    for employee in subordinates:
+        try:
+            # Try to find appropriate new bosses
+            appropriate = get_appropriate_bosses(
+                    employee.position, employee.department, boss)
+            # Choose a random one
+            employee.boss = choice(appropriate)
+        except IndexError:
+            # In case there were none, nullify the field
+            employee.boss = None
+        # Don't forget to save the changes
+        employee.save()

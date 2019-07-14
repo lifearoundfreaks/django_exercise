@@ -8,8 +8,7 @@
         </h5>
         <div class="row">
             <div class="col-3">
-                {% load static %}
-                <img style="width: 100%;" src="{{ employee.photo.url }}">
+                <img style="width: 100%;" src="{{ employee.photo.url }}"/>
             </div>
             <div class="col-2">
                 <p class="card-text text-right"><b>Position:</b></p>
@@ -35,5 +34,8 @@
             </div>
         </div>
     </div>
+    
+    <a class="btn btn-outline-dark" href="edit" role="button">Edit Employee</a>
+    <a class="btn btn-outline-danger" href="delete" role="button">Delete Employee</a>
 </div>
 {% endblock %}

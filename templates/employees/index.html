@@ -35,6 +35,50 @@
                 dataType: '',
             });
         });
+        doDraggable();
+        doDroppable();
     });
+    $(document).ajaxComplete(function () {
+        doDraggable();
+        doDroppable();
+    });
+    function doDraggable() {
+        $(".draggable").draggable({
+                revert: true,
+                zIndex: 300,
+        });
+    }
+    function doDroppable() {
+        $(".droppable").droppable({
+            accept: ".draggable",
+            hoverClass: "on-draggable-hover",
+            drop: function(e, ui) {
+                boss_id = e.target.id;
+                sub_id = ui.draggable.attr("id");
+                boss_name = e.target.textContent.split("\n", 7)[5].trim();
+                sub_name = ui.draggable.text().split("\n", 7)[5].trim();
+                result = confirm(`You are trying to make ${boss_name} a new boss for ${sub_name}. Proceed?`);
+                if(result){
+                    $.ajax({
+                    type: 'POST',
+                    async: true,
+                    url: '/employees/boss_reassign/',
+                    data: {
+                        boss_id: boss_id,
+                        sub_id: sub_id,
+                        csrfmiddlewaretoken: '{{ csrf_token }}',
+                    },
+                    success: function (data) {
+                        alert(data);
+                        location.href = '/';
+                    },
+                    error: function (xhr, status, e) {
+                        alert(status);
+                    },
+                    dataType: '',
+                });}
+            },
+        });
+    }
 </script>
 {% endblock %}
