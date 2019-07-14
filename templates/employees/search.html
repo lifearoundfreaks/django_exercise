@@ -1,0 +1,97 @@
+{% extends 'index.html' %}
+
+{% block content %}
+<style>
+    .form-control:focus {
+        border-color: rgb(122, 122, 122);
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(75, 75, 75, 0.6);
+    }
+</style>
+<form id="searchForm" class="form-inline justify-content-end pb-5">
+    <div class="form-group">
+        <input type="text" class="form-control" id="searchQuery">
+    </div>
+    <div class="form-group ml-3">
+        <label for="sortBy" class="pr-3" placeholder="Search query">Sort by:</label>
+        <select id="sortBy" class="form-control">
+            <option value="last_name" selected>Last name</option>
+            <option value="first_name">First name</option>
+            <option value="position">Position</option>
+            <option value="department">Department</option>
+            <option value="hiring_date">Hiring date</option>
+            <option value="salary">Salary</option>
+        </select>
+    </div>
+    <div class="form-group pl-3">
+        <button type="submit" class="btn btn-dark btn-primary">Search</button>
+    </div>
+</form>
+<ul id="search_results">
+    {% include "employees/search_results.html" %}
+</ul>
+{% endblock %}
+
+
+{% block javascript %}
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#searchForm").submit(function (e) {
+            e.preventDefault();
+            page = 1
+            query = $("#searchQuery").val()
+            sort_by = $('#sortBy').val()
+            $.ajax({
+                type: 'GET',
+                async: true,
+                url: '/search/',
+                data: {
+                    ajax: true,
+                    page: page,
+                    query: query,
+                    sort_by: sort_by,
+                },
+                success: function (data) {
+                    $("#search_results").html(data)
+                },
+                error: function (xhr, status, e) {
+                    alert(status);
+                },
+                dataType: '',
+            });
+
+        });
+        $(document).on('click', '.page-item > button', function () {
+            page = $(this).text()
+
+            if (page == "Previous" && !$(this).hasClass("disabled")) {
+                page = parseInt($(".page-item > button.active").text()) - 1
+            }
+            if (page == "Next" && !$(this).hasClass("disabled")) {
+                page = parseInt($(".page-item > button.active").text()) + 1
+            }
+            if (!$(this).hasClass("disabled")) {
+                query = $("#searchQuery").val()
+                sort_by = $('#sortBy').val()
+                $.ajax({
+                    type: 'GET',
+                    async: true,
+                    url: '/search/',
+                    data: {
+                        ajax: true,
+                        page: page,
+                        query: query,
+                        sort_by: sort_by,
+                    },
+                    success: function (data) {
+                        $("#search_results").html(data)
+                    },
+                    error: function (xhr, status, e) {
+                        alert(status);
+                    },
+                    dataType: '',
+                });
+            }
+        });
+    });
+</script>
+{% endblock %}

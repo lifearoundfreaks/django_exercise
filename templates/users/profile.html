@@ -1,0 +1,10 @@
+{% extends 'index.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+<h3>Logged in as '{{ user.username }}'</h3>
+<div class="border-top pt-3">
+    <small class="text-muted">
+        <a href="{% url 'logout' %}">Log Out</a>
+    </small>
+</div>
+{% endblock %}

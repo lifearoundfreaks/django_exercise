@@ -1,14 +1,15 @@
-from django.contrib import admin
-from django.urls import path
-from .views import *
+from django.urls import path, include
+from . import views
+from .api import urls as api_urls
 
 
 urlpatterns = [
-    path(r'', employees_list),
-    path(r'sort_fullname/', SortFullName.as_view()),
-    path(r'sort_position/', SortPosition.as_view()),
-    path(r'sort_salary/', SortSalary.as_view()),
-    path(r'sort_department/', SortDepartment.as_view()),
-    path(r'<int:id>/', employees_detail),
-    path(r'search_fullname/$', search_fullname, name='search_fullname'),
+    path('', views.employees),
+    path('employees/<int:employee_id>/', views.employee),
+    path('employees/add/', views.create_employee),
+    path('employees/boss_reassign/', views.reassign_boss),
+    path('employees/<int:employee_id>/delete/', views.delete_employee),
+    path('employees/<int:employee_id>/edit/', views.edit_employee),
+    path('search/', views.search),
+    path('api', include(api_urls)),
 ]

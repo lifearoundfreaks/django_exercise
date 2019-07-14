@@ -1,129 +1,84 @@
-{% extends 'employees/employees.html' %}
-{% load staticfiles %}
-{% block menu %}
+{% extends 'index.html' %}
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" href="#">Django</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar1" aria-controls="navbar1" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-  	</button>
 
-  	<div class="collapse navbar-collapse" id="navbar1">
-    	<ul class="navbar-nav mr-auto">
-      		<li class="nav-item active">
-        		<a class="nav-link" href="..">Home</a>
-      		</li>
-		    <li class="nav-item">
-		    	<a class="nav-link" href="">Employees</a>
-		    </li>
-    	</ul>
-
-        <div class="dropdown pr-sm-4">
-   <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        sort
-    </button>
-    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-        <a class="dropdown-item" href="javascript:"  id="fullname_">fullname</a>
-        <a class="dropdown-item" href="javascript:" id="position">position</a>
-        <a class="dropdown-item" href="javascript:" id="department">department</a>
-        <a class="dropdown-item" href="javascript:" id="salary">salary</a>
-    </div>
-</div>
-    	<form class="form-inline my-2 my-lg-0" id="search_form">
-      		<input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" id="search_input">
-              <span id="searchclear" class="glyphicon glyphicon-remove-circle"></span>
-      		<button class="btn btn-outline-info my-2 my-sm-0" type="submit" name="search_fullname" id="search_">Search</button>
-    	</form>
-  	</div>
-</nav>
-{% endblock %}
 {% block content %}
-<div class="container mt-5">
-{% for employee in obj_list %}
-
-{% if employee.department %}
-<div class="card">
-    <div class="card-header">
-        {{employee.department.name_head}}
-    </div>
-    <div class="card-body">
-        <h5 class="card-title">{{  employee.fullname}}</h5>
-        <p class="cart-text">дата приема на работу: {{employee.works_Data}}</p>
-        <p class="cart-text">должность: {{employee.position }}</p>
-        <p class="cart-text">зарплата: {{employee.salary}}</p>
-        <a href="{{employee.get_url}}" class="btn btn-light">Read</a>
-    </div>
-</div>
-{% else %}
-<div class="card">
-    <div class="card-body">
-        <h5 class="card-title">{{  employee.fullname}}</h5>
-        <p class="cart-text">дата приема на работу: {{employee.works_Data}}</p>
-        <p class="cart-text">должность: {{employee.position}}</p>
-        <p class="cart-text">зарплата: {{employee.salary}}</p>
-        <a href="{{employee.get_url}}" class="btn btn-light">Read</a>
-    </div>
-</div>
-
-{% endif %}
-{% endfor %}
-</div>
+<ul>
+    {% include "employees/card_list.html" %}
+</ul>
 {% endblock %}
 
 
-{% block add_script %}
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-
-      <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+{% block javascript %}
 <script type="text/javascript">
-     $(document).ready(function () {
-        $("#fullname_").click(function() {
+    $(document).ready(function () {
+        $(document).on('click', '.subordinates', function () {
+
+            if ($(this).text() == "Show subordinates"){
+                $(this).text("Hide subordinates")
+            }
+            else {
+                $(this).text("Show subordinates")
+            }
+
+            var id = $(this).attr('id');
             $.ajax({
                 type: 'GET',
                 async: true,
-                url: '/employees/sort_fullname/',
-                data: "",
-                success: function(data) {
-                    $("#result").html(data);
+                url: '/',
+                data: { id: id },
+                success: function (data) {
+                    $("#sub" + id).html(data);
                 },
-                error: function(xhr, status, e) {
-                   alert(status);
+                error: function (xhr, status, e) {
+                    alert(status);
                 },
                 dataType: '',
             });
         });
-         $("#position").click(function() {
-            $.ajax({
-                type: 'GET',
-                async: true,
-                url: '/employees/sort_position/',
-                data: "",
-                success: function(data) {
-                    $("#result").html(data);
-                },
-                error: function(xhr, status, e) {
-                   alert(status);
-                },
-                dataType: '',
-            });
-        });
-          $("#salary").click(function() {
-            $.ajax({
-                type: 'GET',
-                async: true,
-                url: '/employees/sort_salary/',
-                data: "",
-                success: function(data) {
-                    $("#result").html(data);
-                },
-                error: function(xhr, status, e) {
-                   alert(status);
-                },
-                dataType: '',
-            });
-        });
+        doDraggable();
+        doDroppable();
     });
+    $(document).ajaxComplete(function () {
+        doDraggable();
+        doDroppable();
+    });
+    function doDraggable() {
+        $(".draggable").draggable({
+                revert: true,
+                zIndex: 300,
+        });
+    }
+    function doDroppable() {
+        $(".droppable").droppable({
+            accept: ".draggable",
+            hoverClass: "on-draggable-hover",
+            drop: function(e, ui) {
+                boss_id = e.target.id;
+                sub_id = ui.draggable.attr("id");
+                boss_name = e.target.textContent.split("\n", 7)[5].trim();
+                sub_name = ui.draggable.text().split("\n", 7)[5].trim();
+                result = confirm(`You are trying to make ${boss_name} a new boss for ${sub_name}. Proceed?`);
+                if(result){
+                    $.ajax({
+                    type: 'POST',
+                    async: true,
+                    url: '/employees/boss_reassign/',
+                    data: {
+                        boss_id: boss_id,
+                        sub_id: sub_id,
+                        csrfmiddlewaretoken: '{{ csrf_token }}',
+                    },
+                    success: function (data) {
+                        alert(data);
+                        location.href = '/';
+                    },
+                    error: function (xhr, status, e) {
+                        alert(status);
+                    },
+                    dataType: '',
+                });}
+            },
+        });
+    }
 </script>
-{% endblock%}
+{% endblock %}

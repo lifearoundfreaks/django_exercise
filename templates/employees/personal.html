@@ -1,0 +1,41 @@
+{% extends 'index.html' %}
+{% block content %}
+<div class="card">
+    <div class="card-body mb-2">
+
+        <h5 class="card-title pb-2 ml-3">
+            {{ employee.last_name }} {{ employee.first_name }}
+        </h5>
+        <div class="row">
+            <div class="col-3">
+                <img style="width: 100%;" src="{{ employee.photo.url }}"/>
+            </div>
+            <div class="col-2">
+                <p class="card-text text-right"><b>Position:</b></p>
+                <p class="card-text text-right"><b>Department:</b></p>
+                <p class="card-text text-right"><b>Boss:</b></p>
+                <p class="card-text text-right"><b>Salary:</b></p>
+                <p class="card-text text-right"><b>Was hired:</b></p>
+            </div>
+            <div class="col-7">
+                <p class="card-text">{{ employee.position }}</p>
+                <p class="card-text">
+                    {% if not employee.department %} Not in a department
+                    {% else %} {{ employee.department }}
+                    {% endif %}
+                </p>
+                <p class="card-text">
+                    {% if not employee.boss %} Has no boss
+                    {% else %} <a href="/employees/{{ employee.boss.id }}/">{{ employee.boss }}</a>
+                    {% endif %}
+                </p>
+                <p class="card-text">{{ employee.salary }}</p>
+                <p class="card-text">{{ employee.hiring_date }}</p>
+            </div>
+        </div>
+    </div>
+    
+    <a class="btn btn-outline-dark" href="edit" role="button">Edit Employee</a>
+    <a class="btn btn-outline-danger" href="delete" role="button">Delete Employee</a>
+</div>
+{% endblock %}

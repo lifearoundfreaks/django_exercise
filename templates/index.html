@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<!-- Required meta tags -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+		integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+	<!-- Page title -->
+	<title id="{{ title_id }}">{{ title }}</title>
+
+	<style>.on-draggable-hover {background-color: #cdcdcd;}</style>
+</head>
+
+<body>
+	<!-- Navbar -->
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+		{% if user.is_authenticated %}
+		<a class="navbar-brand" href="{% url 'profile' %}">{{ user.username }}</a>
+		{% else %}
+		<a class="navbar-brand" href="{% url 'login' %}">Not logged in</a>
+		{% endif %}
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar1"
+			aria-controls="navbar1" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+
+		<!-- Navbar options -->
+		<div class="collapse navbar-collapse" id="navbar1">
+			<ul class="navbar-nav mr-auto">
+				<li class="nav-item">
+					<a id="tree" class="nav-link" href="/">Treeview</a>
+				</li>
+				<li class="nav-item">
+					<a id="adv_search" class="nav-link" href="/search/">Search</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="/api">API</a>
+				</li>
+			</ul>
+		</div>
+	</nav>
+
+	<!-- Page content -->
+	<div class="container mt-5">
+		{% if messages %}
+			{% for message in messages %}
+				<div class="alert alert-{{ message.tags }}">
+					{{ message }}
+				</div>
+			{% endfor %}
+		{% endif %}
+		{% block content %}{% endblock %}
+	</div>
+
+	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+	<script src="https://code.jquery.com/jquery-3.4.1.min.js"
+		integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+	<script src="https://code.jquery.com/ui/1.12.0/jquery-ui.min.js"
+		integrity="sha256-eGE6blurk5sHj+rmkfsGYeKyZx3M4bG+ZlFyA7Kns7E=" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+		integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+		crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+		integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+		crossorigin="anonymous"></script>
+
+	<!-- Optional JavaScript -->
+	<script type="text/javascript">
+		$(document).ready(function () {
+			
+			// Setting active nav item
+			title_id = $("head title").attr('id')
+			$("li.nav-item > a").each(function (index) {
+				nav_id = $(this).attr("id")
+				if (title_id == nav_id) {
+					$(this).addClass("active")
+				}
+			});
+		});
+	</script>
+
+	{% block javascript %}
+	{% endblock %}
+
+</body>
+<!-- Footer -->
+<footer class="page-footer font-small blue">
+	<!-- Copyright -->
+	<div class="footer-copyright text-center py-3 mb-5">© 2019 Copyright: somebody</div>
+</footer>
+
+</html>
