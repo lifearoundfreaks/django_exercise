@@ -7,8 +7,10 @@ from django.shortcuts import get_object_or_404
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.admin.views.decorators import staff_member_required
 from .forms import EmployeeForm
+from .decorators import user_access_error
 
 
+@user_access_error
 @staff_member_required(login_url='login')
 def employees(request):
     if request.method == 'GET':
@@ -37,6 +39,7 @@ def employees(request):
             return render(request, "employees/index.html", context)
 
 
+@user_access_error
 @staff_member_required(login_url='login')
 def employee(request, employee_id):
     context = {
@@ -59,6 +62,7 @@ def employee(request, employee_id):
         return render(request, 'employees/personal.html', context)
 
 
+@user_access_error
 @staff_member_required(login_url='login')
 def search(request):
     if request.method == 'GET':
@@ -138,6 +142,7 @@ def search(request):
             return render(request, "employees/search.html", context)
 
 
+@user_access_error
 @staff_member_required(login_url='login')
 def create_employee(request):
     form = EmployeeForm(request.POST or None)
@@ -150,6 +155,7 @@ def create_employee(request):
     return render(request, "employees/create.html", context)
 
 
+@user_access_error
 @staff_member_required(login_url='login')
 def edit_employee(request, employee_id):
     employee = get_object_or_404(Employee, id=employee_id)
@@ -166,6 +172,7 @@ def edit_employee(request, employee_id):
     return render(request, "employees/edit.html", context)
 
 
+@user_access_error
 @staff_member_required(login_url='login')
 def delete_employee(request, employee_id):
     e = get_object_or_404(Employee, id=employee_id)
@@ -178,6 +185,7 @@ def delete_employee(request, employee_id):
     return render(request, "employees/delete.html", context)
 
 
+@user_access_error
 @staff_member_required(login_url='login')
 def reassign_boss(request):
     if request.method == 'POST':
