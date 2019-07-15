@@ -137,7 +137,7 @@ def search(request):
                 ) if total_number > page_size else "",
 
                 "title": "Employee search page",
-                "title_id": "adv_search",
+                "title_id": "adv-search",
             }
             return render(request, "employees/search.html", context)
 
@@ -151,6 +151,8 @@ def create_employee(request):
         return redirect("/")
     context = {
         "form": form,
+        "title": "Employee creation",
+        "title_id": "add-employee",
     }
     return render(request, "employees/create.html", context)
 
@@ -168,6 +170,7 @@ def edit_employee(request, employee_id):
     context = {
         "employee": employee,
         "form": form,
+        "title": "Updating employee",
     }
     return render(request, "employees/edit.html", context)
 
@@ -181,11 +184,11 @@ def delete_employee(request, employee_id):
         return redirect("/")
     context = {
         "employee": e,
+        "title": "Employee deletion",
     }
     return render(request, "employees/delete.html", context)
 
 
-@user_access_error
 @staff_member_required(login_url='login')
 def reassign_boss(request):
     if request.method == 'POST':
