@@ -161,7 +161,6 @@ def create_employee(request):
 @staff_member_required(login_url='login')
 def edit_employee(request, employee_id):
     employee = get_object_or_404(Employee, id=employee_id)
-    print(request.FILES)
     form = EmployeeForm(
         request.POST or None, request.FILES or None, instance=employee)
     if form.is_valid():
