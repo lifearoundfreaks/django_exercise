@@ -2,7 +2,7 @@
 
 [Detailed description of the project](docs/project-description-en.pdf)
 
-This project is a demo of making web-applications, working with databases and using various technologies (**jQuery**, **ajax**, **Rest Framework**, etc) with Django Framework. As a technical assignment, I used a test assignment provided by [abz.agency](https://abz.agency/). It's attached as [assignment.pdf](assignment.pdf) but sadly, no translation is provided. However, translated technical assignment is in [the detailed project description](docs/project-description-en.pdf).
+This project is a demo of making web-applications, working with databases and using various technologies (**jQuery**, **ajax**, **Rest Framework**, etc) with Django Framework. As a technical assignment, I used a test assignment provided by [abz.agency](https://abz.agency/). It's attached as [assignment.pdf](docs/assignment.pdf) but sadly, no translation is provided. However, translated technical assignment is in [the detailed project description](docs/project-description-en.pdf).
 
 ## Installation
 
